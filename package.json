@@ -1,0 +1,41 @@
+{
+  "name": "elitetracker",
+  "version": "1.0.0",
+  "description": "API para Elite Tracker",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "keywords": [
+    "api",
+    "expres ",
+    " TypesScript",
+    "elitetracker"
+  ],
+  "author": {
+    "name": "Thiago Gonçalves",
+    "url": "https://github.com/RAGNAR303"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@types/express": "^5.0.3",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import-helpers": "^2.0.1",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "dayjs": "^1.11.13",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.1",
+    "zod": "^4.0.17",
+    "zod-validation-error": "^4.0.1"
+  }
+}
