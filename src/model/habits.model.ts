@@ -2,13 +2,11 @@ import { Schema, model } from 'mongoose';
 
 const HabitShema = new Schema(
   {
-    name: {
-      type: String,
-      required: true, // "required" siginifica que e obrigatorio
-    },
-    completedDates: {
-      type: [Date],
-    },
+    name: String,
+
+    completedDates: [Date],
+
+    userId: String,
   },
   {
     versionKey: false,

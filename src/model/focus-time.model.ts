@@ -2,16 +2,11 @@ import { Schema, model } from 'mongoose';
 
 const FocusTimeSchema = new Schema(
   {
-    timeFrom: {
-      // tempo inicial
-      type: Date, // Vai ser do tipo data
-      required: true, // "required" siginifica que e obrigatorio
-    },
-    timeTo: {
-      // tempo final
-      type: Date, // Vai ser do tipo data
-      required: true, // "required" siginifica que e obrigatorio
-    },
+    timeFrom: Date, // Vai ser do tipo data
+
+    timeTo: Date, // Vai ser do tipo data
+
+    userId: String,
   },
   {
     versionKey: false,

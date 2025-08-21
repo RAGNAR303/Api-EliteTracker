@@ -1,7 +1,20 @@
-import { request, Request, Response } from 'express';
+import axios, { isAxiosError } from 'axios';
+import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
-const clientId = 'Ov23lihC4o5c7VA2iSLe';
-const clientSecret = '769c871a341c6d54cfcc49b2d2b0aa9915626107';
+const {
+  GITHUB_CLIENT_ID: clientId,
+  GITHUB_CLIENT_SECRET: clientSecret,
+  JWT_SECRET: secret,
+  JWT_EXPIRES_IN: expiresIn,
+} = process.env;
+
+console.log({
+  clientId: clientId,
+  clientSecret: clientSecret,
+  expiresIn: expiresIn,
+  secret: secret,
+});
 
 export class AuthController {
   auth = async (request: Request, response: Response) => {
@@ -11,7 +24,46 @@ export class AuthController {
   };
 
   authCallback = async (request: Request, response: Response) => {
-    console.log({ ...request.query });
-    return response.send();
+    try {
+      const { code } = request.query;
+
+      const accessTokenResult = await axios.post(
+        'https://github.com/login/oauth/access_token',
+        {
+          client_id: clientId,
+          client_secret: clientSecret,
+          code,
+        },
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      const userDataResult = await axios.get('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer ${accessTokenResult.data.access_token} `,
+        },
+      });
+
+      console.log(userDataResult.data);
+
+      const { node_id: id, avatar_url: avatarUrl, name } = userDataResult.data;
+
+      const token = jwt.sign({ id }, String(secret), { expiresIn });
+
+      console.log({ Controller: token });
+
+      return response.status(200).json({ id, avatarUrl, name, token });
+    } catch (err) {
+      if (isAxiosError(err)) {
+        return response.status(400).json(err.response?.data);
+      }
+
+      return response
+        .status(500)
+        .json({ message: 'Something want wrong(Algo deu errado)' });
+    }
   };
 }

@@ -3,12 +3,13 @@ import packageJson from '../package.json';
 import { HabitsController } from './contollers/habits.controller';
 import { FocusTimeController } from './contollers/focus-time.controller';
 import { AuthController } from './contollers/auth.controller';
+import { authMiddleware } from './middlewares/auth.middlewares';
 
 export const routes = Router();
 
 const habitsController = new HabitsController();
 const focusTimeController = new FocusTimeController();
-const authcontroller = new AuthController();
+const authController = new AuthController();
 
 routes.get('/', (request, response) => {
   const { name, description, version } = packageJson;
@@ -16,9 +17,11 @@ routes.get('/', (request, response) => {
   return response.status(200).json({ name, description, version });
 });
 
-routes.get('/auth', authcontroller.auth);
+routes.get('/auth', authController.auth);
 
-routes.get('/auth/callback', authcontroller.authCallback);
+routes.get('/auth/callback', authController.authCallback);
+
+routes.use(authMiddleware);
 
 // Rota para listar(index) os hábitos que foi cadastrado
 routes.get('/habits', habitsController.index);

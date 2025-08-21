@@ -36,6 +36,7 @@ export class HabitsController {
     const newHabit = await habitModel.create({
       name: habit.data.name,
       completedDates: [],
+      userId: request.user.id,
     });
 
     // Retornando  JSON da criação do habit
@@ -44,7 +45,9 @@ export class HabitsController {
   };
   // Função para listar os Habitos no metodo "index"(get) trazer para ser vizualizado
   index = async (request: Request, response: Response) => {
-    const habits = await habitModel.find().sort({ name: 1 });
+    const habits = await habitModel
+      .find({ userId: request.user.id })
+      .sort({ name: 1 });
     // "sort " manda os listagem em order alfabetica => crescente
     // Se colocar -1 ele lista da formar decrecente
 
@@ -71,6 +74,7 @@ export class HabitsController {
     // Verificando se o Habits ja exite para ser deletado
     const findhabit = await habitModel.findOne({
       _id: habit.data.id,
+      userId: request.user.id,
     });
     // Se não exitir ele vai retorna que não existe
     if (!findhabit) {
@@ -103,6 +107,7 @@ export class HabitsController {
     // Verificando se o Habits ja exite para ser deletado
     const findhabit = await habitModel.findOne({
       _id: valited.data.id,
+      userId: request.user.id,
     });
 
     console.log(findhabit);
@@ -188,6 +193,7 @@ export class HabitsController {
       .aggregate()
       .match({
         _id: new mongoose.Types.ObjectId(validated.data.id),
+        userId: request.user.id,
       })
       .project({
         _id: 1, // 0 retorna nada
