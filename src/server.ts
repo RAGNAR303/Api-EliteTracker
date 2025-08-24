@@ -3,12 +3,19 @@ import 'dotenv/config';
 import express from 'express';
 import { setupMongo } from './database';
 import { routes } from './routes';
+import cors from 'cors';
 
 const app = express();
 
 setupMongo()
   .then(() => {
-    // Faz o "express" endenter json
+    // Faz o "express" intender json
+    // app.use(
+    //   cors({
+    //     origin: true, // Configura a URL do front para acessar
+    //   }),
+    // );
+    app.use(cors());
     app.use(express.json());
     app.use(routes);
 
@@ -24,6 +31,7 @@ setupMongo()
 M (Model) -> Responsavel por se comunicar com o banco;
 V (View)  -> Mostrar isso parta o usuario (React)
 C (Controller) -> Controla a requisição, chama o Modal, define RN`s(Regras de negocio) e faz o retorno pro Usuário
+
 
 
 */
