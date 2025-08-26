@@ -1,13 +1,16 @@
 import axios, { isAxiosError } from 'axios';
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 
 const {
   GITHUB_CLIENT_ID: clientId,
   GITHUB_CLIENT_SECRET: clientSecret,
   JWT_SECRET: secret,
-  JWT_EXPIRES_IN: expiresIn,
+  // JWT_EXPIRES_IN: expiresIn,
 } = process.env;
+
+const expiresIn = (process.env.JWT_EXPIRES_IN ||
+  '1d') as SignOptions['expiresIn'];
 
 export class AuthController {
   auth = async (request: Request, response: Response) => {
